@@ -1,0 +1,6 @@
+C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\Utils\bin\Debug\Utils.dll
+C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\Utils\bin\Debug\Utils.pdb
+C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\Utils\bin\Debug\Oracle.DataAccess.dll
+C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\Utils\obj\Debug\Utils.dll
+C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\Utils\obj\Debug\Utils.pdb
+C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\Utils\obj\Debug\Utils.csprojResolveAssemblyReference.cache
