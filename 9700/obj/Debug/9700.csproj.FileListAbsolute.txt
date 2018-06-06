@@ -20,3 +20,23 @@ C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Ex
 C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\obj\Debug\9700.pdb
 C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\Config.ini
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\9700.exe.config
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\Oracle.DataAccess.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\oci.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\oramts.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\oramts11.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\oramtsus.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\orannzsbb11.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\oraocci11.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\oraociei11.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\OraOps11w.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\Config.ini
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\9700.exe
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\9700.pdb
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\Utils.dll
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\Utils.pdb
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\obj\Debug\9700.csprojResolveAssemblyReference.cache
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\obj\Debug\Exportador9700.frmMain.resources
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\obj\Debug\_9700.Properties.Resources.resources
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\obj\Debug\9700.csproj.GenerateResource.Cache
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\obj\Debug\9700.exe
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\obj\Debug\9700.pdb

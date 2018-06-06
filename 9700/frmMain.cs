@@ -103,17 +103,18 @@ namespace Exportador9700
                         {
                             //ITEMS ---------------------------------------------------------------------
                             var sqlCheckDetail = "SELECT CHECK_DETAIL.CHECKDETAILID, CHECK_DETAIL.CHECKID, CHECK_DETAIL.DETAILINDEX, " +
-                                                 "CHECK_DETAIL.DETAILTYPE, CHECK_DETAIL.TOTAL, CHECK_DETAIL.SALESCOUNT, STRING_TABLE.STRINGTEXT, MENU_ITEM_DEFINITION.MENUITEMDEFID MENUITEMDEFID " +
-                                                 "FROM CHECK_DETAIL INNER JOIN MENU_ITEM_DETAIL ON CHECK_DETAIL.CHECKDETAILID = " +
+                                                 "CHECK_DETAIL.DETAILTYPE, CHECK_DETAIL.TOTAL, CHECK_DETAIL.SALESCOUNT, STRING_TABLE.STRINGTEXT, MENU_ITEM_DEFINITION.MENUITEMDEFID MENUITEMDEFID, " +
+                                                 "MENU_ITEM_MASTER.OBJECTNUMBER OBJECTNUMBER FROM CHECK_DETAIL INNER JOIN MENU_ITEM_DETAIL ON CHECK_DETAIL.CHECKDETAILID = " +
                                                  "MENU_ITEM_DETAIL.CHECKDETAILID INNER JOIN MENU_ITEM_DEFINITION ON MENU_ITEM_DEFINITION.MENUITEMDEFID = " +
                                                  "MENU_ITEM_DETAIL.MENUITEMDEFID INNER JOIN STRING_TABLE ON STRING_TABLE.STRINGNUMBERID = " +
-                                                 "MENU_ITEM_DEFINITION.NAME1ID WHERE CHECKID = " + subReaderChecks["CHECKID"] + " AND TOTAL <> 0 AND MENU_ITEM_DEFINITION.MENUITEMCLASSID <> 1341 " + 
+                                                 "MENU_ITEM_DEFINITION.NAME1ID INNER JOIN MENU_ITEM_MASTER ON MENU_ITEM_MASTER.MENUITEMMASTERID = MENU_ITEM_DEFINITION.MENUITEMMASTERID " +
+                                                 "WHERE CHECKID = " + subReaderChecks["CHECKID"] + " AND TOTAL <> 0 AND MENU_ITEM_DEFINITION.MENUITEMCLASSID <> 1341 " + 
                                                  "ORDER BY CHECK_DETAIL.DETAILINDEX";
-
+                            //log.W(sqlCheckDetail);
                             command = connection.CreateCommand();
                             command.CommandText = sqlCheckDetail;
                             OracleDataReader subReaderDetail = command.ExecuteReader();
-
+                            log.W("después sqlCheckDetail");
                             int k = 0;
                             decimal subtotal = 0;
                             string articulo;
@@ -122,7 +123,7 @@ namespace Exportador9700
                                 k++;
                                 subtotal = decimal.Round(Convert.ToDecimal(subReaderDetail["TOTAL"]) / 1.19m);
 
-                                articulo = subReaderDetail["MENUITEMDEFID"].ToString();
+                                articulo = subReaderDetail["OBJECTNUMBER"].ToString();
 
                                 var bved = new BoletaVentaDetalle()
                                 { 
