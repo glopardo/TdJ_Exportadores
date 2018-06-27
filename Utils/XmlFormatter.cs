@@ -944,9 +944,8 @@ namespace Utils
         }
         public static void PrintPaymentElements(XDocument doc, string filePath, string tipoDoc, BoletaVentaPago bvep, int i, int j)
         {
-            XElement paymentElement;
-            string payment = PAYMENT + "-" + j;
-            string document = DOCUMENTO + "-" + i.ToString();
+            var payment = $"{PAYMENT}-{j}";
+            var document = $"{DOCUMENTO}-{i}";
             string codigoPago;
 
             switch (bvep.TrxCode)
@@ -986,7 +985,7 @@ namespace Utils
                     break;
             }
 
-            paymentElement = new XElement("Empresa", "E22");
+            var paymentElement = new XElement("Empresa", "E22");
             doc.Element(LISTA_DOCUMENTOS).Element(document).Element(payment).Add(paymentElement);
 
             paymentElement = new XElement("TipoDocto", tipoDoc);
@@ -1037,7 +1036,8 @@ namespace Utils
             paymentElement = new XElement("CuentaPago");
             doc.Element(LISTA_DOCUMENTOS).Element(document).Element(payment).Add(paymentElement);
 
-            paymentElement = new XElement("FechaVctoTarjeta", Convert.ToDateTime(bvep.Fecha).ToString("MMyyyy"));
+            var fechaSeparada = bvep.Fecha.Split('/');
+            paymentElement = new XElement("FechaVctoTarjeta", $"{fechaSeparada[1]}{fechaSeparada[2]}");
             doc.Element(LISTA_DOCUMENTOS).Element(document).Element(payment).Add(paymentElement);
 
             paymentElement = new XElement("PropietarioTarjeta");

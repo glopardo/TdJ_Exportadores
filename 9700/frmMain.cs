@@ -40,7 +40,7 @@ namespace Exportador9700
         #region Private methods
         private void GenerarArchivo(OracleConnection connection)
         {
-            string tipoDocumento = "BOLETA DE VENTA";
+            var tipoDocumento = "BOLETA DE VENTA";
             log.W("Inicia procesamiento " + tipoDocumento + " - " + dtpDesde.Value.ToString("dd/MM/yyyy"));
 
             if (connection != null)
@@ -52,23 +52,25 @@ namespace Exportador9700
                 try
                 {
                     connection.Open();
-                    OracleCommand command = connection.CreateCommand();
-                    OracleCommand subCommand = connection.CreateCommand();
+                    var command = connection.CreateCommand();
+                    var subCommand = connection.CreateCommand();
 
-                    string query = "SELECT TO_CHAR(FCRBSNZDATE, 'dd/MM/yyyy') FECHA, TO_CHAR(FCRBSNZDATE, 'yyyyMMdd') FECHA2, TO_CHAR(FCRBSNZDATE, 'yyyyMM') PERIODO, " +
-                                   "TO_CHAR(FCRBSNZDATE, 'dd/MM/yyyy') HORA, FCRINVNUMBER FCRINVNUMBER, FCRINVNUMBER INVNUM, " +
-                                   "MICROSCHKNUM CHECKNUM, ROUND(SUBTOTAL8/1.19) NETO, SUBTOTAL2 DESCUENTOS, SUBTOTAL3 SERVICIOS, SUBTOTAL5 EXENTO, " +
-                                   "SUBTOTAL8 TOTAL, SUBTOTAL9 PROPINA, ROUND(SUBTOTAL8/1.19 * 0.19) IVA, PCWSID TERMINAL " +
-                                   "FROM FCR_INVOICE_DATA WHERE TO_CHAR(FCRBSNZDATE, 'yyyyMMdd') = '" + dtpDesde.Value.ToString("yyyyMMdd") + "'" +
-                                   "ORDER BY FCRBSNZDATE DESC";
+                    var query = "SELECT TO_CHAR(FCRBSNZDATE, 'dd/MM/yyyy') FECHA, TO_CHAR(FCRBSNZDATE, 'yyyyMMdd') FECHA2, TO_CHAR(FCRBSNZDATE, 'yyyyMM') PERIODO, " +
+                                "TO_CHAR(FCRBSNZDATE, 'dd/MM/yyyy') HORA, FCRINVNUMBER FCRINVNUMBER, FCRINVNUMBER INVNUM, " +
+                                "MICROSCHKNUM CHECKNUM, ROUND(SUBTOTAL8/1.19) NETO, SUBTOTAL2 DESCUENTOS, SUBTOTAL3 SERVICIOS, SUBTOTAL5 EXENTO, " +
+                                "SUBTOTAL8 TOTAL, SUBTOTAL9 PROPINA, ROUND(SUBTOTAL8/1.19 * 0.19) IVA, PCWSID TERMINAL " +
+                                "FROM FCR_INVOICE_DATA WHERE TO_CHAR(FCRBSNZDATE, 'yyyyMMdd') = '" + dtpDesde.Value.ToString("yyyyMMdd") + "'" +
+                                "ORDER BY FCRBSNZDATE DESC";
+
+                    log.W($"query: {query}");
 
                     command.CommandText = query;
-                    OracleDataReader reader = command.ExecuteReader();
+                    var reader = command.ExecuteReader();
 
-                    string path = dtpDesde.Value.ToString("yyyyMMdd") + "_BoletaDeVenta.xml";
+                    var path = dtpDesde.Value.ToString("yyyyMMdd") + "_BoletaDeVenta.xml";
                     var xDoc = XmlFormatter.OpenFile(path);
 
-                    int i = 0;
+                    var i = 0;
                     while (reader.Read())
                     {
                         i++;
@@ -97,7 +99,7 @@ namespace Exportador9700
 
                         command = connection.CreateCommand();
                         command.CommandText = sqlChecks;
-                        OracleDataReader subReaderChecks = command.ExecuteReader();
+                        var subReaderChecks = command.ExecuteReader();
 
                         while (subReaderChecks.Read())
                         {
@@ -113,65 +115,90 @@ namespace Exportador9700
                             //log.W(sqlCheckDetail);
                             command = connection.CreateCommand();
                             command.CommandText = sqlCheckDetail;
-                            OracleDataReader subReaderDetail = command.ExecuteReader();
-                            log.W("después sqlCheckDetail");
-                            int k = 0;
-                            decimal subtotal = 0;
+                            var subReaderDetail = command.ExecuteReader();
+                            log.W("Procesado sqlCheckDetail");
+                            var k = 0;
                             string articulo;
                             while (subReaderDetail.Read())
                             {
-                                k++;
-                                subtotal = decimal.Round(Convert.ToDecimal(subReaderDetail["TOTAL"]) / 1.19m);
+                                try
+                                {
+                                    k++;
+                                    var subtotal = decimal.Round(Convert.ToDecimal(subReaderDetail["TOTAL"]) / 1.19m);
 
-                                articulo = subReaderDetail["OBJECTNUMBER"].ToString();
+                                    articulo = subReaderDetail["OBJECTNUMBER"].ToString();
 
-                                var bved = new BoletaVentaDetalle()
-                                { 
-                                    Correlativo = i,
-                                    CorrelativoOrigen = Convert.ToInt32(subReaderChecks["CHECKNUMBER"]),
-                                    Secuencia = k,
-                                    Articulo = articulo,
-                                    Cantidad = Convert.ToInt32(subReaderDetail["SALESCOUNT"]),
-                                    Precio = Convert.ToInt32(subReaderDetail["TOTAL"]) / Convert.ToInt32(subReaderDetail["SALESCOUNT"]),
-                                    Subtotal = subtotal,
-                                    Iva = decimal.Round(subtotal * 0.19m),
-                                    Fecha = reader["FECHA"].ToString(),
-                                    Total = Convert.ToInt32(subReaderDetail["TOTAL"])
-                                };
-                                XmlFormatter.PrintDetail(xDoc, path, i, k);
-                                XmlFormatter.PrintDetailElements(xDoc, path, tipoDocumento, bved, i, k);
+                                    var bved = new BoletaVentaDetalle()
+                                    {
+                                        Correlativo = i,
+                                        CorrelativoOrigen = Convert.ToInt32(subReaderChecks["CHECKNUMBER"]),
+                                        Secuencia = k,
+                                        Articulo = articulo,
+                                        Cantidad = Convert.ToInt32(subReaderDetail["SALESCOUNT"]),
+                                        Precio = Convert.ToInt32(subReaderDetail["TOTAL"]) / Convert.ToInt32(subReaderDetail["SALESCOUNT"]),
+                                        Subtotal = subtotal,
+                                        Iva = decimal.Round(subtotal * 0.19m),
+                                        Fecha = reader["FECHA"].ToString(),
+                                        Total = Convert.ToInt32(subReaderDetail["TOTAL"])
+                                    };
+                                    XmlFormatter.PrintDetail(xDoc, path, i, k);
+                                    XmlFormatter.PrintDetailElements(xDoc, path, tipoDocumento, bved, i, k);
+                                }
+                                catch (Exception ex)
+                                {
+                                    log.W($"sqlCheckDetail: {ex.Message}");
+                                    throw;
+                                }
+                                
                             }
                             //PAGOS ---------------------------------------------------------------------
                             var sqlCheckPayment = "SELECT CHECK_DETAIL.CHECKDETAILID, CHECK_DETAIL.CHECKID, CHECK_DETAIL.DETAILINDEX, " +
                                                   "CHECK_DETAIL.DETAILTYPE, CHECK_DETAIL.TOTAL, CHECK_DETAIL.SALESCOUNT, TENDER_MEDIA_DETAIL.TENDMEDID " +
                                                   "FROM CHECK_DETAIL INNER JOIN TENDER_MEDIA_DETAIL ON CHECK_DETAIL.CHECKDETAILID = TENDER_MEDIA_DETAIL.CHECKDETAILID " +
                                                   "WHERE CHECKID = " + subReaderChecks["CHECKID"] + " AND TOTAL > 0 ORDER BY CHECK_DETAIL.DETAILINDEX";
+
                             decimal transbank = 0;
                             command = connection.CreateCommand();
                             command.CommandText = sqlCheckPayment;
-                            OracleDataReader subReaderPayment = command.ExecuteReader();
 
-                            int l = 0;
+                            var subReaderPayment = command.ExecuteReader();
+                            var l = 0;
+
+                            //log.W($"sqlCheckPayment: {sqlCheckPayment}");
+
                             while (subReaderPayment.Read())
                             {
-                                l++;
-                                if (subReaderPayment["TENDMEDID"].ToString() == "21")
-                                    transbank += Convert.ToDecimal(subReaderPayment["TOTAL"]);
-
-
-                                articulo = subReaderPayment["TENDMEDID"].ToString();
-
-                                var bvep = new BoletaVentaPago()
+                                try
                                 {
-                                    Correlativo = i,
-                                    BillNo = Convert.ToInt32(reader["INVNUM"]),
-                                    Linea = l,
-                                    Monto = Convert.ToDecimal(subReaderPayment["TOTAL"]),
-                                    TrxCode = articulo,
-                                    Fecha = reader["FECHA"].ToString()
-                                };
-                                XmlFormatter.PrintPayment(xDoc, path, i, l);
-                                XmlFormatter.PrintPaymentElements(xDoc, path, tipoDocumento, bvep, i, l);
+                                    l++;
+                                    if (subReaderPayment["TENDMEDID"].ToString() == "21")
+                                        transbank += Convert.ToDecimal(subReaderPayment["TOTAL"]);
+
+
+                                    articulo = subReaderPayment["TENDMEDID"].ToString();
+
+                                    log.W("1");
+
+                                    var bvep = new BoletaVentaPago()
+                                    {
+                                        Correlativo = i,
+                                        BillNo = Convert.ToInt32(reader["INVNUM"]),
+                                        Linea = l,
+                                        Monto = Convert.ToDecimal(subReaderPayment["TOTAL"]),
+                                        TrxCode = articulo,
+                                        Fecha = reader["FECHA"].ToString()
+                                    };
+                                    log.W("2");
+                                    XmlFormatter.PrintPayment(xDoc, path, i, l);
+                                    log.W("3");
+                                    XmlFormatter.PrintPaymentElements(xDoc, path, tipoDocumento, bvep, i, l);
+                                    log.W("4");
+                                }
+                                catch (Exception ex)
+                                {
+                                    log.W($"sqlCheckPayment: {ex.Message}");
+                                    throw;
+                                }
                             }
 
                             //VALORES ---------------------------------------------------------------------

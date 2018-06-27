@@ -9,7 +9,7 @@ namespace Utils
 {
     public class Logger
     {
-        public void W(string text, string filePath = "Test.log")
+        public void W(string text, string filePath = "TdJ_Exporter.log")
         {
             text = DateTime.Now.ToString() + " | " + text;
 
