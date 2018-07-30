@@ -14,11 +14,11 @@ namespace Utils
 
             Console.WriteLine("Getting Connection ...");
 
-            string connString = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=" + host +
+            var connString = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=" + host +
                 ")(PORT=" + port + ")))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=" + sid + ")));User Id=" + user +
                 ";Password=" + password + ";";
 
-            OracleConnection conn = new OracleConnection();
+            var conn = new OracleConnection();
             conn.ConnectionString = connString;
 
             return conn;
@@ -28,9 +28,8 @@ namespace Utils
             if (configuration != null)
                 return GetDBConnection(configuration.Host, configuration.Port, configuration.Sid,
                     configuration.User, configuration.Password);
-            else
-                return null;
 
+            return null;
         }
     }
 }

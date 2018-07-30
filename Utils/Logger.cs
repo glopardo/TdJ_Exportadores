@@ -11,7 +11,7 @@ namespace Utils
     {
         public void W(string text, string filePath = "TdJ_Exporter.log")
         {
-            text = DateTime.Now.ToString() + " | " + text;
+            text = DateTime.Now + " | " + text;
 
             if (!File.Exists(filePath))
             {

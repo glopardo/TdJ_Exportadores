@@ -22,7 +22,7 @@ namespace Exportador9700
         #region Event methods
         private void btnGenerar_Click(object sender, EventArgs e)
         {
-            using (OracleConnection connection = ConnDb.GetDBConnection(_configuration))
+            using (var connection = ConnDb.GetDBConnection(_configuration))
             {
                 GenerarArchivo(connection);
             }
@@ -94,8 +94,8 @@ namespace Exportador9700
                         //DETALLE ---------------------------------------------------------------------
                         var sqlChecks = "SELECT CHECKID, CHECKNUMBER, EMPLOYEEID, CASHIERID, WORKSTATIONID, CHECKOPEN, " +
                                         "TABLEOPEN, CHECKCLOSE, SPLITFROMCHECKNUM, SUBTOTAL, TAX, OTHER, PAYMENT, DUE FROM CHECKS " +
-                                        "WHERE TO_CHAR(CHECKPOSTINGTIME, 'YYYYMMDD') = '" + reader["FECHA2"].ToString() + "' and " +
-                                        "CHECKNUMBER = " + reader["CHECKNUM"].ToString();
+                                        "WHERE TO_CHAR(CHECKPOSTINGTIME, 'YYYYMMDD') = '" + reader["FECHA2"] + "' and " +
+                                        "CHECKNUMBER = " + reader["CHECKNUM"];
 
                         command = connection.CreateCommand();
                         command.CommandText = sqlChecks;
@@ -141,6 +141,7 @@ namespace Exportador9700
                                         Fecha = reader["FECHA"].ToString(),
                                         Total = Convert.ToInt32(subReaderDetail["TOTAL"])
                                     };
+
                                     XmlFormatter.PrintDetail(xDoc, path, i, k);
                                     XmlFormatter.PrintDetailElements(xDoc, path, tipoDocumento, bved, i, k);
                                 }
@@ -149,7 +150,6 @@ namespace Exportador9700
                                     log.W($"sqlCheckDetail: {ex.Message}");
                                     throw;
                                 }
-                                
                             }
                             //PAGOS ---------------------------------------------------------------------
                             var sqlCheckPayment = "SELECT CHECK_DETAIL.CHECKDETAILID, CHECK_DETAIL.CHECKID, CHECK_DETAIL.DETAILINDEX, " +
@@ -174,10 +174,7 @@ namespace Exportador9700
                                     if (subReaderPayment["TENDMEDID"].ToString() == "21")
                                         transbank += Convert.ToDecimal(subReaderPayment["TOTAL"]);
 
-
                                     articulo = subReaderPayment["TENDMEDID"].ToString();
-
-                                    log.W("1");
 
                                     var bvep = new BoletaVentaPago()
                                     {
@@ -188,11 +185,9 @@ namespace Exportador9700
                                         TrxCode = articulo,
                                         Fecha = reader["FECHA"].ToString()
                                     };
-                                    log.W("2");
+
                                     XmlFormatter.PrintPayment(xDoc, path, i, l);
-                                    log.W("3");
                                     XmlFormatter.PrintPaymentElements(xDoc, path, tipoDocumento, bvep, i, l);
-                                    log.W("4");
                                 }
                                 catch (Exception ex)
                                 {
@@ -209,12 +204,12 @@ namespace Exportador9700
 
                             command = connection.CreateCommand();
                             command.CommandText = sqlCheckDiscount;
-                            OracleDataReader subReaderDiscount = command.ExecuteReader();
+                            var subReaderDiscount = command.ExecuteReader();
+                            var descQty = 0;
 
-                            int m = 0;
                             while (subReaderDiscount.Read())
                             {
-                                m++;
+                                descQty++;
                                 var bvev = new BoletaVentaValores()
                                 {
                                     Correlativo = i,
@@ -224,12 +219,13 @@ namespace Exportador9700
                                     Monto = Convert.ToDecimal(subReaderDiscount["TOTAL"]),
                                     Porcentaje = 0
                                 };
+
                                 XmlFormatter.PrintValues(xDoc, path, i, 1);
                                 XmlFormatter.PrintValueElements(xDoc, path, tipoDocumento, bvev, i, 1);
                             }
 
-                            //No hubo descuentos, grabo en cero
-                            if(m == 0)
+                            //Si no hubo descuentos no agrego el nodo
+                            if(descQty == 0)
                             {
                                 var bvev = new BoletaVentaValores()
                                 {
@@ -255,12 +251,14 @@ namespace Exportador9700
                                 Monto = 0,
                                 Porcentaje = 0
                             };
-                            XmlFormatter.PrintValues(xDoc, path, i, 2);
-                            XmlFormatter.PrintValueElements(xDoc, path, tipoDocumento, bvev2, i, 2);
+
+                            //Por ahora no agrego el nodo correspondiente a EXENTO ya que no se manejan montos exentos
+                            //XmlFormatter.PrintValues(xDoc, path, i, 2);
+                            //XmlFormatter.PrintValueElements(xDoc, path, tipoDocumento, bvev2, i, 2);
 
                             //VALORES ---------------------------------------------------------------
                             //IVA -------------------------------------------------------------------
-                            string iva = "0";
+                            var iva = "0";
 
                             if (reader["IVA"].ToString() != string.Empty)
                                 iva = reader["IVA"].ToString();
@@ -274,6 +272,7 @@ namespace Exportador9700
                                 Monto = decimal.Round(Convert.ToDecimal(iva)),
                                 Porcentaje = 0
                             };
+
                             XmlFormatter.PrintValues(xDoc, path, i, 3);
                             XmlFormatter.PrintValueElements(xDoc, path, tipoDocumento, bvev2, i, 3);
 
@@ -305,7 +304,7 @@ namespace Exportador9700
                             XmlFormatter.PrintValueElements(xDoc, path, tipoDocumento, bvev2, i, 5);
                             //VALORES ---------------------------------------------------------------
                             //PROPINA ---------------------------------------------------------------
-                            string propina = "0";
+                            var propina = "0";
 
                             if (reader["PROPINA"].ToString() != string.Empty)
                                 propina = reader["PROPINA"].ToString();

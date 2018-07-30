@@ -28,7 +28,7 @@ namespace Utils
         /// <param name="index">Número de documento a imprimir</param>
         public static void PrintDocument(string path, XDocument doc, int index)
         {
-            XElement root = new XElement(DOCUMENTO + "-" + index);
+            var root = new XElement(DOCUMENTO + "-" + index);
             doc.Element(LISTA_DOCUMENTOS).Add(root);
 
             PrintHeader(doc, path, index);
@@ -37,8 +37,8 @@ namespace Utils
         public static void PrintHeaderElements(XDocument doc, string filePath, string tipoDoc, BoletaVentaHeader bveh, int index)
         {
             XElement headerElement;
-            string cliente = "1";
-            string document = DOCUMENTO + "-" + index.ToString();
+            var cliente = "1";
+            var document = DOCUMENTO + "-" + index;
 
             headerElement = new XElement("Empresa", "E22");
             doc.Element(LISTA_DOCUMENTOS).Element(document).Element(HEADER).Add(headerElement);
@@ -401,12 +401,11 @@ namespace Utils
         }
         public static void PrintDetailElements(XDocument doc, string filePath, string tipoDoc, BoletaVentaDetalle bved, int i, int j)
         {
-            XElement detailElement;
-            string detail = DETAIL + "-" + j;
-            string document = DOCUMENTO + "-" + i.ToString();
-            int cantidad = 1;
+            var detail = DETAIL + "-" + j;
+            var document = DOCUMENTO + "-" + i;
+            var cantidad = 1;
 
-            detailElement = new XElement("Empresa", "E22");
+            var detailElement = new XElement("Empresa", "E22");
             doc.Element(LISTA_DOCUMENTOS).Element(document).Element(detail).Add(detailElement);
 
             detailElement = new XElement("TipoDocto", tipoDoc);
@@ -1071,11 +1070,10 @@ namespace Utils
         }
         public static void PrintValueElements(XDocument doc, string filePath, string tipoDoc, BoletaVentaValores bvev, int i, int j)
         {
-            XElement valueElement;
-            string values = VALUES + "-" + j;
-            string document = DOCUMENTO + "-" + i.ToString();
+            var values = VALUES + "-" + j;
+            var document = DOCUMENTO + "-" + i;
 
-            valueElement = new XElement("Empresa", "E22");
+            var valueElement = new XElement("Empresa", "E22");
             doc.Element(LISTA_DOCUMENTOS).Element(document).Element(values).Add(valueElement);
 
             valueElement = new XElement("TipoDocto", tipoDoc);
@@ -1127,33 +1125,31 @@ namespace Utils
         {
             if (!File.Exists(filePath))
                 return new XDocument(new XElement(LISTA_DOCUMENTOS));
-            else
-            {
-                File.Delete(filePath);
-                return new XDocument(new XElement(LISTA_DOCUMENTOS));
-            }
+
+            File.Delete(filePath);
+            return new XDocument(new XElement(LISTA_DOCUMENTOS));
         }
         public static void PrintDetail(XDocument doc, string filePath, int i, int j)
         {
-            XElement detail = new XElement(DETAIL + "-" + j);
+            var detail = new XElement(DETAIL + "-" + j);
             doc.Element(LISTA_DOCUMENTOS).Element(DOCUMENTO + "-" + i).Add(detail);
             doc.Save(filePath);
         }
         public static void PrintPayment(XDocument doc, string filePath, int i, int j)
         {
-            XElement payment = new XElement(PAYMENT + "-" + j);
+            var payment = new XElement(PAYMENT + "-" + j);
             doc.Element(LISTA_DOCUMENTOS).Element(DOCUMENTO + "-" + i).Add(payment);
             doc.Save(filePath);
         }
         public static void PrintValues(XDocument doc, string filePath, int i, int j)
         {
-            XElement value = new XElement(VALUES + "-" + j);
+            var value = new XElement(VALUES + "-" + j);
             doc.Element(LISTA_DOCUMENTOS).Element(DOCUMENTO + "-" + i).Add(value);
             doc.Save(filePath);
         }
         public static void RenameXmlNodes(XDocument doc, string filePath)
         {
-            Logger log = new Logger();
+            var log = new Logger();
             log.W("Renaming " + filePath);
 
             foreach(var element in doc.Descendants())
@@ -1174,7 +1170,7 @@ namespace Utils
         #region Protected methods
         protected static void PrintHeader(XDocument doc, string filePath, int index)
         {
-            XElement header = new XElement(HEADER);
+            var header = new XElement(HEADER);
             doc.Element(LISTA_DOCUMENTOS).Element(DOCUMENTO + "-" + index).Add(header);
             doc.Save(filePath);
         }
