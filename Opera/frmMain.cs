@@ -196,7 +196,7 @@ namespace ExportadorOpera
                                     Monto = Convert.ToDecimal(subReader["TRX_AMOUNT"])
                                 };
                                 XmlFormatter.PrintPayment(xDoc, path, i, j);
-                                XmlFormatter.PrintPaymentElements(xDoc, path, tipoDocumento, bvep, i, j);
+                                XmlFormatter.PrintPaymentElements(xDoc, path, tipoDocumento, bvep, i, j, true);
                             }
 
                             //Print VALORES(DESCUENTO)

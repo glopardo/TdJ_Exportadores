@@ -187,7 +187,7 @@ namespace Exportador9700
                                     };
 
                                     XmlFormatter.PrintPayment(xDoc, path, i, l);
-                                    XmlFormatter.PrintPaymentElements(xDoc, path, tipoDocumento, bvep, i, l);
+                                    XmlFormatter.PrintPaymentElements(xDoc, path, tipoDocumento, bvep, i, l, false);
                                 }
                                 catch (Exception ex)
                                 {

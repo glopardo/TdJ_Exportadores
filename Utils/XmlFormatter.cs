@@ -941,47 +941,98 @@ namespace Utils
 
             doc.Save(filePath);
         }
-        public static void PrintPaymentElements(XDocument doc, string filePath, string tipoDoc, BoletaVentaPago bvep, int i, int j)
+        public static void PrintPaymentElements(XDocument doc, string filePath, string tipoDoc, BoletaVentaPago bvep, int i, int j, bool desdeOpera)
         {
             var payment = $"{PAYMENT}-{j}";
             var document = $"{DOCUMENTO}-{i}";
             string codigoPago;
 
-            switch (bvep.TrxCode)
+            if (desdeOpera)
             {
-                case "9040":
-                    codigoPago = "AMERICAN EXPRESS";
-                    break;
-                case "9041":
-                    codigoPago = "VISA";
-                    break;
-                case "9042":
-                    codigoPago = "MASTER CARD";
-                    break;
-                case "9043":
-                    codigoPago = "DINERAL CLUB";
-                    break;
-                case "9050":
-                    codigoPago = "REDCOMPRA";
-                    break;
-                case "9060":
-                    codigoPago = "ANTICIPO";
-                    break;
-                case "9020":
-                    codigoPago = "CRED. 30 DIAS";
-                    break;
-                case "9000":
-                    codigoPago = "EFECTIVO";
-                    break;
-                case "9010":
-                    codigoPago = "EFECTIVO";
-                    break;
-                case "9011":
-                    codigoPago = "EFECTIVO";
-                    break;
-                default:
-                    codigoPago = "OTROS";
-                    break;
+                switch (bvep.TrxCode)
+                {
+                    case "9040":
+                        codigoPago = "AMERICAN EXPRESS";
+                        break;
+                    case "9041":
+                        codigoPago = "VISA";
+                        break;
+                    case "9042":
+                        codigoPago = "MASTER CARD";
+                        break;
+                    case "9043":
+                        codigoPago = "DINERAL CLUB";
+                        break;
+                    case "9050":
+                        codigoPago = "REDCOMPRA";
+                        break;
+                    case "9060":
+                        codigoPago = "ANTICIPO";
+                        break;
+                    case "9020":
+                        codigoPago = "CRED. 30 DIAS";
+                        break;
+                    case "9000":
+                        codigoPago = "EFECTIVO";
+                        break;
+                    case "9010":
+                        codigoPago = "EFECTIVO";
+                        break;
+                    case "9011":
+                        codigoPago = "EFECTIVO";
+                        break;
+                    default:
+                        codigoPago = "OTROS";
+                        break;
+                }
+            }
+            else
+            {
+                switch (bvep.TrxCode)
+                {
+                    case "15":
+                        codigoPago = "AMERICAN EXPRESS";
+                        break;
+                    case "18":
+                        codigoPago = "VISA";
+                        break;
+                    case "16":
+                        codigoPago = "MASTER CARD";
+                        break;
+                    case "17":
+                        codigoPago = "DINERAL CLUB";
+                        break;
+                    case "21":
+                        codigoPago = "REDCOMPRA";
+                        break;
+                    case "8":
+                        codigoPago = "EFECTIVO";
+                        break;
+                    case "9":
+                        codigoPago = "EFECTIVO USD";
+                        break;
+                    case "24":
+                        codigoPago = "CARGO";
+                        break;
+                    case "26":
+                        codigoPago = "CARGO";
+                        break;
+                    case "101":
+                        codigoPago = "CARGO";
+                        break;
+                    case "10":
+                        codigoPago = "CHEQUE";
+                        break;
+                    case "81":
+                        codigoPago = "DESC.PERSONAL";
+                        break;
+                    case "103":
+                        codigoPago = "DESC.PERSONAL";
+                        break;
+                    default:
+                        codigoPago = "EFECTIVO";
+                        break;
+                }
             }
 
             var paymentElement = new XElement("Empresa", "E22");

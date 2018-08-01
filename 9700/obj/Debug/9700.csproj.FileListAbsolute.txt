@@ -19,7 +19,6 @@ C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Ex
 C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\obj\Debug\9700.exe
 C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\obj\Debug\9700.pdb
 C:\Users\glopardo\Google Drive\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\Config.ini
-C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\9700.exe.config
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\Oracle.DataAccess.dll
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\oci.dll
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\oramts.dll
@@ -30,6 +29,7 @@ C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\or
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\oraociei11.dll
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\OraOps11w.dll
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\Config.ini
+C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\9700.exe.config
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\9700.exe
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\9700.pdb
 C:\Netgroup\Termas de Jahuel\Exportadores\src\TdJ_Exportadores\9700\bin\Debug\Utils.dll
